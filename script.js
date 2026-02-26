@@ -3,7 +3,6 @@ const myLibrary = [];
 
 // Object to use to create new books
 function Book(id, title, author, year) {
-  // the constructor...
   if (!new.target) {
     throw Error("Ensure to use 'new' when creating instances.");
   }
@@ -14,27 +13,29 @@ function Book(id, title, author, year) {
 }
 
 // Function to add new created books into the library array
-function addBookToLibrary(id, title, author, year) {
-  // take params, create a book then store it in the array
-  const book = new Book(id, title, author, year);
+function addBookToLibrary(title, author, year) {
+  const book = new Book(crypto.randomUUID(), title, author, year);
   myLibrary.push(book);
 }
 
-// Mock books created to test functionality through function call
-addBookToLibrary(crypto.randomUUID(), "Harry Potter", "Trump", 2000);
-addBookToLibrary(crypto.randomUUID(), "theHobbit", "JD. Vance", 2010);
-addBookToLibrary(crypto.randomUUID(), "William James", "Hillary Clinton", 1998);
-
-// Query to have access over the tbody
-const tBody= document.querySelector('#data');
-
-// The initial function to add each table row
-function bookTable(bookElement) {
-  for (let i= 0; i < bookElement.length; i++) {
-    const tr= document.createElement('tr');
-    const transformedBook= `<td>${bookElement[i].id}</td><td>${bookElement[i].title}</td><td>${bookElement[i].author}</td><td>${bookElement[i].year}</td>`
-    tr.innerHTML= transformedBook;
-    tBody.appendChild(tr);
-  }
+// Receive user inputted books
+const form= document.querySelector('form');
+form.addEventListener('submit', extractBook);
+function extractBook(e) {
+  e.preventDefault();
+  const data= new FormData(e.target);
+  const formData= Object.fromEntries(data.entries());
+  addBookToLibrary(formData.title, formData.author, formData.year);
+  addBookToTable(myLibrary);
 }
-bookTable(myLibrary)
+
+// Function to add each table row
+let booksAdded = 0;
+const tBody= document.querySelector('#data');
+function addBookToTable(bookElement) {
+  const tr= document.createElement('tr');
+  const transformedBook= `<td>${bookElement[booksAdded].id}</td><td>${bookElement[booksAdded].title}</td><td>${bookElement[booksAdded].author}</td><td>${bookElement[booksAdded].year}</td>`
+  tr.innerHTML= transformedBook;
+  tBody.appendChild(tr);
+  booksAdded += 1;
+}
