@@ -19,6 +19,7 @@ function addBookToLibrary(title, author, year) {
 }
 
 // Receive user inputted books
+const dialog= document.querySelector('#form-dialog');
 const form= document.querySelector('form');
 form.addEventListener('submit', extractBook);
 function extractBook(e) {
@@ -27,6 +28,7 @@ function extractBook(e) {
   const formData= Object.fromEntries(data.entries());
   addBookToLibrary(formData.title, formData.author, formData.year);
   addBookToTable(myLibrary);
+  dialog.close();
 }
 
 // Function to add each table row
