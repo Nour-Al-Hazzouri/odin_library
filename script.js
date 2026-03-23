@@ -1,5 +1,6 @@
 // Array to store books
 const myLibrary = [];
+
 // Counter for displaying added book in table
 let booksAdded = 0;
 
@@ -43,12 +44,32 @@ function extractBook(e) {
 const tBody = document.querySelector("#data");
 function addBookToTable(bookElement) {
   const tr = document.createElement("tr");
+  tr.setAttribute("data-delete", `${bookElement[booksAdded].id}`);
   const transformedBook = `<td>${bookElement[booksAdded].title} 
-  <button data-delete="${bookElement.id}">Delete</button></td>
+  <button data-delete="${bookElement[booksAdded].id}">Delete</button></td>
   <td>${bookElement[booksAdded].author}</td>
   <td>${bookElement[booksAdded].year}</td>
   <td>${bookElement[booksAdded].read}</td>`;
   tr.innerHTML = transformedBook;
   tBody.appendChild(tr);
   booksAdded += 1;
+
+  // Logic to add event listener to each button in the table
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach((button) => {
+    if (
+      button.hasAttribute("data-delete") &&
+      !button.hasAttribute("data-ignore")
+    ) {
+      button.setAttribute("data-ignore", "yes");
+      button.addEventListener("click", deleteRow);
+    }
+  });
+}
+
+// Create the deleteRow function
+function deleteRow(e) {
+  const dataDelete = e.target.getAttribute("data-delete");
+  const rowToDelete = document.querySelector(`[data-delete="${dataDelete}"]`);
+  rowToDelete.remove();
 }
