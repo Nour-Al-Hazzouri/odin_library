@@ -44,32 +44,58 @@ function extractBook(e) {
 const tBody = document.querySelector("#data");
 function addBookToTable(bookElement) {
   const tr = document.createElement("tr");
-  tr.setAttribute("data-delete", `${bookElement[booksAdded].id}`);
+  tr.setAttribute("data-id", `${bookElement[booksAdded].id}`);
   const transformedBook = `<td>${bookElement[booksAdded].title} 
-  <button data-delete="${bookElement[booksAdded].id}">Delete</button></td>
+  <button data-delete>Delete</button></td>
   <td>${bookElement[booksAdded].author}</td>
   <td>${bookElement[booksAdded].year}</td>
-  <td>${bookElement[booksAdded].read}</td>`;
+  <td>${bookElement[booksAdded].read} <button data-read>Change</button></td>`;
   tr.innerHTML = transformedBook;
   tBody.appendChild(tr);
   booksAdded += 1;
-
-  // Logic to add event listener to each button in the table
-  const buttons = document.querySelectorAll("button");
-  buttons.forEach((button) => {
-    if (
-      button.hasAttribute("data-delete") &&
-      !button.hasAttribute("data-ignore")
-    ) {
-      button.setAttribute("data-ignore", "yes");
-      button.addEventListener("click", deleteRow);
-    }
-  });
+  eventExecution();
 }
 
 // Create the deleteRow function
 function deleteRow(e) {
-  const dataDelete = e.target.getAttribute("data-delete");
-  const rowToDelete = document.querySelector(`[data-delete="${dataDelete}"]`);
+  const selectedRow = e.target.closest("tr").getAttribute("data-id");
+  const rowToDelete = document.querySelector(`[data-id="${selectedRow}"]`);
   rowToDelete.remove();
+}
+
+// Prototype method to change read status
+Book.prototype.changeRead = function () {
+  if (this.read == "Yes") {
+    this.read = "No";
+  } else {
+    this.read = "Yes";
+  }
+};
+
+// Create function to change read status in table
+function changeReadStatus(e) {
+  const target = e.target.closest("tr").getAttribute("data-id");
+  let readStatus;
+  for (let book of myLibrary) {
+    if (book.id == target) {
+      book.changeRead();
+      readStatus = book.read;
+    }
+  }
+  const selectedButton = e.target;
+  selectedButton.closest("td").innerHTML =
+    `${readStatus} <button data-read>Change</button>`;
+  eventExecution();
+}
+
+// Logic to add event listener to each button in the table
+function eventExecution() {
+  const buttons = document.querySelectorAll("tbody button");
+  buttons.forEach((button) => {
+    if (button.hasAttribute("data-delete")) {
+      button.addEventListener("click", deleteRow);
+    } else if (button.hasAttribute("data-read")) {
+      button.addEventListener("click", changeReadStatus);
+    }
+  });
 }
