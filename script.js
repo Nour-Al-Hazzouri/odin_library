@@ -60,6 +60,13 @@ function addBookToTable(bookElement) {
 function deleteRow(e) {
   const selectedRow = e.target.closest("tr").getAttribute("data-id");
   const rowToDelete = document.querySelector(`[data-id="${selectedRow}"]`);
+  let deleteFromLibrary;
+  for (let book of myLibrary) {
+    if (book.id == selectedRow) {
+      deleteFromLibrary= myLibrary.indexOf(book);
+    }
+  }
+  myLibrary.splice(deleteFromLibrary, 1);
   rowToDelete.remove();
 }
 
