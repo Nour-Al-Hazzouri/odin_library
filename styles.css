@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Rubik";
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  background-color: #000;
+}
+
+h1 {
+  text-align: center;
+  color: #ffffff;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  width: fit-content;
+  padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+  border-radius: 4px;
+  margin: 2% 0 2% 0;
+}
+
+table {
+  width: 90%;
+  text-align: center;
+}
+th,
+td {
+  border: #000 1px solid;
+  padding: 10px;
+  color: #ffffff;
+}
+thead th {
+  color: #ffffff;
+  background-color: #2e5d2e;
+}
+tbody tr:nth-child(even) {
+  background-color: #113f55;
+  color: #ffffff;
+}
+[data-delete] {
+  background: red;
+}
+[data-read] {
+  color: #fff;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #000;
+}
+dialog {
+  border: #ffffff 2px solid;
+  background-color: #000;
+}
+label {
+  color: #ffffff;
+}
+input[type="radio"] {
+  color: #113f55;
+}
