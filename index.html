@@ -10,7 +10,7 @@
 
 <body>
   <h1>Library</h1>
-  <button command="show-modal" commandfor="form-dialog">Add Book</button>
+  <button class="add-book" command="show-modal" commandfor="form-dialog">Add Book</button>
   <table>
     <thead>
       <tr>
@@ -26,13 +26,13 @@
   <dialog id="form-dialog">
     <form>
       <label for="title">Title</label>
-      <input type="text" id="title" name="title">
+      <input type="text" required id="title" name="title">
       <label for="author">Author</label>
-      <input type="text" id="author" name="author">
+      <input type="text" id="author" required name="author">
       <label for="year">Year</label>
-      <input type="text" id="year" name="year">
+      <input type="number" inputmode="decimal" required id="year" name="year">
       <label for="yes">Yes</label>
-      <input type="radio" id="yes" name="read" value="Yes">
+      <input type="radio" required id="yes" name="read" value="Yes">
       <label for="no">No</label>
       <input type="radio" id="no" name="read" value="No">
       <button type="submit" id="submit">Submit</button>
