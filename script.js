@@ -63,7 +63,7 @@ function deleteRow(e) {
   let deleteFromLibrary;
   for (let book of myLibrary) {
     if (book.id == selectedRow) {
-      deleteFromLibrary= myLibrary.indexOf(book);
+      deleteFromLibrary = myLibrary.indexOf(book);
     }
   }
   myLibrary.splice(deleteFromLibrary, 1);
