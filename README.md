@@ -1,4 +1,4 @@
-# odin_library
+# Odin Library
 
 **The first JS Project in The Odin Project's FullStack JavaScript Path**
 
