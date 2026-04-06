@@ -5,21 +5,48 @@ const myLibrary = [];
 let booksAdded = 0;
 
 // Object to create new books
-function Book(title, author, year, read) {
-  if (!new.target) {
-    throw Error("Ensure to use 'new' when creating instances.");
+class Book {
+  #UUID
+  #title;
+  #author;
+  #year;
+  #read;
+
+  constructor(UUID, title, author, year, read) {
+    this.#UUID = UUID
+    this.#title = title;
+    this.#author = author;
+    this.#year = year;
+    this.#read = read;
   }
-  const UUID = crypto.randomUUID();
-  this.id = UUID;
-  this.title = title;
-  this.author = author;
-  this.year = year;
-  this.read = read;
+  get UUID() {
+    return this.#UUID;
+  }
+  get Title() {
+    return this.#title;
+  }
+  get Author() {
+    return this.#author;
+  }
+  get Year() {
+    return this.#year;
+  }
+  get Read() {
+    return this.#read;
+  }
+  set changeRead(readStatus) {
+    if (readStatus === 'Yes') {
+      this.#read = 'No';
+    } else {
+      this.#read = 'Yes';
+    }
+  }
 }
 
 // Function to add new created books into the library array
 function addBookToLibrary(title, author, year, read) {
-  const book = new Book(title, author, year, read);
+  const UUID = crypto.randomUUID();
+  const book = new Book(UUID, title, author, year, read);
   myLibrary.push(book);
 }
 
@@ -44,12 +71,12 @@ function extractBook(e) {
 const tBody = document.querySelector("#data");
 function addBookToTable(bookElement) {
   const tr = document.createElement("tr");
-  tr.setAttribute("data-id", `${bookElement[booksAdded].id}`);
-  const transformedBook = `<td>${bookElement[booksAdded].title} 
+  tr.setAttribute("data-id", `${bookElement[booksAdded].UUID}`);
+  const transformedBook = `<td>${bookElement[booksAdded].Title} 
   <button data-delete>Delete</button></td>
-  <td>${bookElement[booksAdded].author}</td>
-  <td>${bookElement[booksAdded].year}</td>
-  <td>${bookElement[booksAdded].read} <button data-read>Change</button></td>`;
+  <td>${bookElement[booksAdded].Author}</td>
+  <td>${bookElement[booksAdded].Year}</td>
+  <td>${bookElement[booksAdded].Read} <button data-read>Change</button></td>`;
   tr.innerHTML = transformedBook;
   tBody.appendChild(tr);
   booksAdded += 1;
@@ -62,7 +89,7 @@ function deleteRow(e) {
   const rowToDelete = document.querySelector(`[data-id="${selectedRow}"]`);
   let deleteFromLibrary;
   for (let book of myLibrary) {
-    if (book.id == selectedRow) {
+    if (book.UUID == selectedRow) {
       deleteFromLibrary = myLibrary.indexOf(book);
     }
   }
@@ -70,23 +97,15 @@ function deleteRow(e) {
   rowToDelete.remove();
 }
 
-// Prototype method to change read status
-Book.prototype.changeRead = function () {
-  if (this.read == "Yes") {
-    this.read = "No";
-  } else {
-    this.read = "Yes";
-  }
-};
-
 // Create function to change read status in table
 function changeReadStatus(e) {
   const target = e.target.closest("tr").getAttribute("data-id");
   let readStatus;
   for (let book of myLibrary) {
-    if (book.id == target) {
-      book.changeRead();
-      readStatus = book.read;
+    if (book.UUID == target) {
+
+      book.changeRead = book.Read;
+      readStatus = book.Read;
     }
   }
   const selectedButton = e.target;
