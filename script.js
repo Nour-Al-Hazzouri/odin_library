@@ -26,18 +26,57 @@ function addBookToLibrary(title, author, year, read) {
 // Receive user inputted books
 const dialog = document.querySelector("#form-dialog");
 const form = document.querySelector("form");
+const title = document.querySelector("#title");
+const author = document.querySelector("#author");
+const year = document.querySelector("#year");
+const yes = document.querySelector("#yes");
+const no = document.querySelector("#no");
+
 form.addEventListener("submit", extractBook);
 function extractBook(e) {
-  e.preventDefault();
-  const data = new FormData(e.target);
-  const formData = Object.fromEntries(data.entries());
-  addBookToLibrary(
-    formData.title,
-    formData.author,
-    formData.year,
-    formData.read,
-  );
-  addBookToTable(myLibrary);
+  e.preventDefault(); // Stop the form submission
+  if (!title.checkValidity()) {
+    if (title.validity.valueMissing) {
+      title.setCustomValidity("Title cannot be empty!");
+    } else if (title.validity.tooLong || title.validity.tooShort) {
+      title.setCustomValidity("Title should be between 2 and 50 characters!");
+    } else {
+      title.setCustomValidity("");
+    }
+    title.reportValidity();
+  } else if (!author.checkValidity()) {
+    if (author.validity.valueMissing) {
+      author.setCustomValidity("Author cannot be empty!");
+    } else if (author.validity.tooLong || author.validity.tooShort) {
+      author.setCustomValidity("Author should be between 2 and 50 characters!");
+    } else {
+      author.setCustomValidity("");
+    }
+    author.reportValidity();
+  } else if (!year.checkValidity()) {
+    if (year.validity.valueMissing) {
+      year.setCustomValidity("Year cannot be empty!");
+    } else {
+      year.setCustomValidity("");
+    }
+    year.reportValidity();
+  } else if (!yes.checkValidity() && !no.checkValidity()) {
+    if (yes.validity.valueMissing || no.validity.valueMissing) {
+      yes.setCustomValidity("Select either yes or no!");
+      yes.reportValidity();
+    }
+    yes.setCustomValidity("");
+  } else {
+    const data = new FormData(e.target);
+    const formData = Object.fromEntries(data.entries());
+    addBookToLibrary(
+      formData.title,
+      formData.author,
+      formData.year,
+      formData.read,
+    );
+    addBookToTable(myLibrary);
+  }
 }
 
 // Function to add each table row
